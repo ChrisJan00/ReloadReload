@@ -14,7 +14,7 @@ function weapon.load(rl)
   reloadLength = rl
 end
 
-function weapon.update()
+function weapon.update(dt)
 
     local x, y = love.mouse.getPosition()
     
@@ -57,7 +57,6 @@ end
 
 function weapon.mousepressed(x,y,button)
   if button == "l" and reloaded() then
-    print "shoot"
     weapon.shoot()
   end
 end
