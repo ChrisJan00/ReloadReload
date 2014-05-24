@@ -1,5 +1,5 @@
 function love.conf(t)
-    isFullscreen = false 
+    isFullscreen = true 
 
     t.title = "ReloadReload"        -- The title of the window the game is in (string)
     t.author = "Fabian Gerhardt, Iwan Gabovitch & Christiaan Janssen"        -- The author of the game (string)

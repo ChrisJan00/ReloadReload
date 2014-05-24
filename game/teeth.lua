@@ -33,7 +33,7 @@ end
 function teeth.hit()
 	-- was hit by a candy
 	teeth.count = teeth.count - 1
-	playSound(sounds.toothcrunch)
+	sounds.play(sounds.toothcrunch)
 	if teeth.count == 0 then
 		gameOver()
 	end
