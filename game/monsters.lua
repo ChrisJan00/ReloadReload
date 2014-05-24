@@ -13,7 +13,8 @@ function monsters.load()
 	}
 
 
-		monsters.spawnMonster()
+	monsters.spawnDelay = 1
+	monsters.spawnTimer = monsters.spawnDelay
 
 end
 
@@ -24,12 +25,14 @@ function monsters.spawnMonster()
 			self.pic = monsters.enemypics[math.random(#monsters.enemypics)]
 
 			-- in-game coords
-			self.xx = math.random()*2 - 1
+			self.xx = (math.random()*2 - 1)*0.9
 			self.yy = 0
 			self.zz = -1
 
-			self.ww = self.pic:getWidth() / 800 * 10
-			self.hh = self.pic:getHeight() / 600 * 10
+
+
+			-- self.ww = self.pic:getWidth() / 800 * 10
+			-- self.hh = self.pic:getHeight() / 600 * 10
 			self.zspeed = 0.1
 
 
@@ -38,29 +41,34 @@ function monsters.spawnMonster()
 		update = function (self, dt)
 			self.zz = self.zz + self.zspeed * dt
 			if self.zz > 0 then self:kill() end
+
+			-- screen coords
+			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()
+			self.x = sw * (self.xx * 0.5 + 0.5)
+			self.y = sh * (self.yy * 0.5 + 0.5)
+			
 		end,
 
 		draw = function(self)
-			local x = self.xx * 0.5 + 0.5
-			local y = self.yy * 0.5 + 0.5
 			local sc = 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
-			local w = self.ww * sc
-			local h = self.hh * sc
-
-			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()
 			
-			x,y = x*sw,y*sh
-
 			local frac = self.zz + 1
 			love.graphics.setColor(255*frac,255*frac,255*frac)
 			-- love.graphics.rectangle("fill",x-w*0.5,y-h*0.5,w,h)
-			love.graphics.draw(self.pic, x, y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
+			love.graphics.draw(self.pic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
 		kill = function(self)
 			self.dead = true
 			monsters.anyDead = true
 		end,
+
+		getLimits = function(self)
+			local sc = 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
+			local xleft = self.x - self.pic:getWidth() * sc * 0.5
+			local xright = self.x + self.pic:getWidth() * sc * 0.5
+			return xleft, xright
+		end
 	}
 
 	newMonster:init()
@@ -78,7 +86,17 @@ local function cleanMonsterList()
 	end
 end
 
+local function updateSpawner(dt)
+	monsters.spawnTimer = monsters.spawnTimer - dt
+	while monsters.spawnTimer <= 0 do
+		monsters.spawnTimer = monsters.spawnTimer + monsters.spawnDelay
+		monsters.spawnMonster()
+	end
+end
+
+
 function monsters.update(dt)
+	updateSpawner(dt)
 	for i,monster in ipairs(monsters.list) do
 		monster:update(dt)
 	end

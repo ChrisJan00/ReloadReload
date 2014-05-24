@@ -20,10 +20,6 @@ function love.keyreleased(key)
 	aim.keyreleased(key)
 end
 
-function love.mousepressed()
-	monsters.mousepressed()
-end
-
 function love.update(dt)
 	aim.update(dt)
   weapon.update(dt)
