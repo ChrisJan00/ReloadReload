@@ -2,25 +2,36 @@ local monsters = {}
 
 function monsters.load()
 	monsters.list = {}
-	monsters.spawnMonster()
-	monsters.maxscale = 1
+	monsters.maxscale = 2
 	monsters.minscale = 0.1
 	monsters.zscale = 1/monsters.maxscale - 1/monsters.minscale
 	monsters.z0 = 10
 	monsters.zbias = monsters.z0 * monsters.zscale + 1/monsters.maxscale
+
+	monsters.enemypics = {
+		love.graphics.newImage("images/enemy1.png")
+	}
+
+
+		monsters.spawnMonster()
+
 end
 
 function monsters.spawnMonster()
 	local newMonster = {
 		init = function(self)
+			-- pic
+			self.pic = monsters.enemypics[math.random(#monsters.enemypics)]
+
 			-- in-game coords
 			self.xx = math.random()*2 - 1
 			self.yy = 0
 			self.zz = -1
 
-			self.ww = 0.5
-			self.hh = 1
+			self.ww = self.pic:getWidth() / 800 * 10
+			self.hh = self.pic:getHeight() / 600 * 10
 			self.zspeed = 0.1
+
 
 		end,
 
@@ -38,11 +49,12 @@ function monsters.spawnMonster()
 
 			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()
 			
-			x,y,w,h = x*sw,y*sh,w*sw,h*sh
+			x,y = x*sw,y*sh
 
 			local frac = self.zz + 1
 			love.graphics.setColor(255*frac,255*frac,255*frac)
-			love.graphics.rectangle("fill",x-w*0.5,y-h*0.5,w,h)
+			-- love.graphics.rectangle("fill",x-w*0.5,y-h*0.5,w,h)
+			love.graphics.draw(self.pic, x, y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
 		kill = function(self)
