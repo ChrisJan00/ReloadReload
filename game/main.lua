@@ -8,7 +8,7 @@ function love.load()
 	doctors = love.filesystem.load("doctors.lua")()
 	doctors.load()
 	weapon = love.filesystem.load("weapon.lua")()
-	weapon.load(200, doctors)
+	weapon.load(100, doctors)
 	collisions = love.filesystem.load("collisions.lua")()
     teeth = love.filesystem.load("teeth.lua")()
     teeth.load()
@@ -18,6 +18,10 @@ function love.load()
 	thickness = 0.05
     isGameOver = false
     gameoverpic = love.graphics.newImage("images/gameoverscr.png")
+
+    -- if not isFullscreen then
+    	love.mouse.setVisible( false )
+    -- end
 end
 
 function love.keypressed(key)
