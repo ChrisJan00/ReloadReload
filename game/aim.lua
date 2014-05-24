@@ -133,7 +133,7 @@ function aim.draw()
 	local posy = love.graphics.getHeight()*0.5
 	local r = 40
 
-	love.graphics.setColor(255,255,255)
+	love.graphics.setColor(139,133,204)
 	love.graphics.circle("line", posx, posy, r, r/2)
 	love.graphics.line(posx, posy - r, posx, posy + r)
 	love.graphics.line(posx - r, posy, posx + r, posy)
