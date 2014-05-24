@@ -5,10 +5,15 @@ function love.load()
 	monsters.load()
 	bg = love.filesystem.load("background.lua")()
 	bg.load()
-  doctors = love.filesystem.load("doctors.lua")()
-  doctors.load()
-  weapon = love.filesystem.load("weapon.lua")()
+	doctors = love.filesystem.load("doctors.lua")()
+	doctors.load()
+	weapon = love.filesystem.load("weapon.lua")()
 	weapon.load(200, doctors)
+    teeth = love.filesystem.load("teeth.lua")()
+    teeth.load()
+
+    isGameOver = false
+    gameoverpic = love.graphics.newImage("images/gameoverscr.png")
 end
 
 function love.keypressed(key)
@@ -25,22 +30,38 @@ function love.keyreleased(key)
 end
 
 function love.update(dt)
+	if isGameOver then
+		return
+	end
+
+
 	aim.update(dt)
-  weapon.update(dt)
+	weapon.update(dt)
 	monsters.update(dt)
-  doctors.update(dt)
-  weapon.position = aim.getPosition()
+	doctors.update(dt)
+	weapon.position = aim.getPosition()
 end
 
 function love.draw()
 	bg.draw()
 	monsters.draw()
-  doctors.draw()
+	doctors.draw()
 	aim.draw()
-  weapon.draw(aim.getPosition())
+	weapon.draw(aim.getPosition())
+	teeth.draw()
+
+    if isGameOver then
+        love.graphics.setColor(255,255,255)
+        love.graphics.draw(gameoverpic)
+    end
 end
 
 function love.mousepressed( x, y, button )
   weapon.mousepressed(x,y,button)
 	monsters.mousepressed()
+end
+
+function gameOver()
+   isGameOver = true
+   monsters.mousepressed()
 end
