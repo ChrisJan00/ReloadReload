@@ -22,7 +22,7 @@ function monsters.load()
 	}
 
 
-	monsters.spawnDelay = 2.5
+	monsters.spawnDelay = 5
 	monsters.spawnTimer = monsters.spawnDelay
 
 end
