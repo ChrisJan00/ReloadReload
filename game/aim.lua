@@ -139,4 +139,10 @@ function aim.draw()
 	love.graphics.line(posx - r, posy, posx + r, posy)
 end
 
+function aim.getPosition()
+  local w = love.graphics.getWidth()
+  return pointerPos * w
+end
+
 return aim
+
