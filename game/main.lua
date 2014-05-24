@@ -11,6 +11,8 @@ function love.load()
 	weapon.load(200, doctors)
     teeth = love.filesystem.load("teeth.lua")()
     teeth.load()
+    sounds = love.filesystem.load("sounds.lua")()
+    sounds.load()
 
 	thickness = 0.05
     isGameOver = false

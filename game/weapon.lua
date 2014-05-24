@@ -41,6 +41,7 @@ function weapon.update(dt)
 
     if traveled > reloadLength and reloadState < 2 then
       reloadState = reloadState + 1
+      sounds.reload[reloadState]:play()
       traveled = 0
     end
 
@@ -48,6 +49,7 @@ function weapon.update(dt)
 end
 
 function weapon.shoot()
+  sounds.shoot:play()
   reloadState = 0
   traveled = 0
 end
