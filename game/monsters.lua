@@ -11,6 +11,9 @@ function monsters.load()
 	monsters.enemypics = {
 		love.graphics.newImage("images/enemy1.png")
 	}
+	monsters.solidpics = {
+		love.graphics.newImage("images/enemy1_solid.png")
+	}
 
 
 	monsters.spawnDelay = 1
@@ -22,7 +25,9 @@ function monsters.spawnMonster()
 	local newMonster = {
 		init = function(self)
 			-- pic
-			self.pic = monsters.enemypics[math.random(#monsters.enemypics)]
+			local ndx = math.random(#monsters.enemypics)
+			self.pic = monsters.enemypics[ndx]
+			self.solidpic = monsters.solidpics[ndx]
 
 			-- in-game coords
 			self.xx = (math.random()*2 - 1)*0.9
@@ -52,10 +57,12 @@ function monsters.spawnMonster()
 		draw = function(self)
 			local sc = 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
 			
-			local frac = self.zz + 1
-			love.graphics.setColor(255*frac,255*frac,255*frac)
-			-- love.graphics.rectangle("fill",x-w*0.5,y-h*0.5,w,h)
+			love.graphics.setColor(255,255,255)
 			love.graphics.draw(self.pic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
+			
+			local frac = -self.zz
+			love.graphics.setColor(bg.skycolor[1],bg.skycolor[2],bg.skycolor[3],255*frac)
+			love.graphics.draw(self.solidpic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
 		kill = function(self)
