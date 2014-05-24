@@ -45,10 +45,7 @@ function monsters.spawnMonster()
 
 		update = function (self, dt)
 			self.zz = self.zz + self.zspeed * dt
-			if self.zz > 0 then 
-				self:kill() 
-				teeth.hit()
-			end
+			if self.zz > 0 then self:kill() end
 
 			-- screen coords
 			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()

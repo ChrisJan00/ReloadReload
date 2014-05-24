@@ -12,8 +12,13 @@ local reloadLength = 0
 
 local shotgun = love.graphics.newImage( "images/shotgunready.png" )
 
-function weapon.load(rl)
+local doctors = {}
+
+weapon.position = 0
+
+function weapon.load(rl,docs)
   reloadLength = rl
+  doctors = docs 
 end
 
 function weapon.update(dt)
@@ -60,11 +65,12 @@ end
 function weapon.mousepressed(x,y,button)
   if button == "l" and reloaded() then
     weapon.shoot()
+    doctors.spawnDoctor(weapon.position)
   end
 end
 
-function weapon.draw(aimPosition)
-  love.graphics.draw(shotgun, aimPosition+100, 500)
+function weapon.draw()
+  love.graphics.draw(shotgun, weapon.position + 100, 500)
   if reloaded() then
     love.graphics.print("reloaded", 10,50)
   end
