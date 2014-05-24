@@ -57,6 +57,7 @@ function checkDoctorCollision()
 				if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
 					doc:kill()
 					mon:kill()
+					sounds.play(sounds.splash)
 				end
 			end
 		end
