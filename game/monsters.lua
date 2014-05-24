@@ -9,10 +9,16 @@ function monsters.load()
 	monsters.zbias = monsters.z0 * monsters.zscale + 1/monsters.maxscale
 
 	monsters.enemypics = {
-		love.graphics.newImage("images/enemy1.png")
+		love.graphics.newImage("images/enemy1.png"),
+		love.graphics.newImage("images/enemy2.png"),
+		love.graphics.newImage("images/enemy3.png"),
+		love.graphics.newImage("images/enemy4.png")
 	}
 	monsters.solidpics = {
-		love.graphics.newImage("images/enemy1_solid.png")
+		love.graphics.newImage("images/enemy1_solid.png"),
+		love.graphics.newImage("images/enemy2_solid.png"),
+		love.graphics.newImage("images/enemy3_solid.png"),
+		love.graphics.newImage("images/enemy4_solid.png")
 	}
 
 
