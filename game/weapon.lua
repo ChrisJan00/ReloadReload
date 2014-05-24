@@ -10,6 +10,8 @@ local reloadState = 0
 
 local reloadLength = 0
 
+local shotgun = love.graphics.newImage( "images/shotgunready.png" )
+
 function weapon.load(rl)
   reloadLength = rl
 end
@@ -61,7 +63,8 @@ function weapon.mousepressed(x,y,button)
   end
 end
 
-function weapon.draw()
+function weapon.draw(aimPosition)
+  love.graphics.draw(shotgun, aimPosition+100, 500)
   if reloaded() then
     love.graphics.print("reloaded", 10,50)
   end

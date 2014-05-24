@@ -32,7 +32,7 @@ function love.draw()
 	bg.draw()
 	monsters.draw()
 	aim.draw()
-  weapon.draw()
+  weapon.draw(aim.getPosition())
 end
 
 function love.mousepressed( x, y, button )
