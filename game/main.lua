@@ -1,7 +1,8 @@
 function love.load()
 	aim = love.filesystem.load("aim.lua")()
 	aim.load()
-
+  weapon = love.filesystem.load("weapon.lua")()
+  weapon.load(200)
 	monsters = love.filesystem.load("monsters.lua")()
 	monsters.load()
 end
@@ -25,10 +26,16 @@ end
 
 function love.update(dt)
 	aim.update(dt)
+  weapon.update(dt)
 	monsters.update(dt)
 end
 
 function love.draw()
 	monsters.draw()
 	aim.draw()
+  weapon.draw()
+end
+
+function love.mousepressed( x, y, button )
+  weapon.mousepressed(x,y,button)
 end
