@@ -16,7 +16,6 @@ function loadkeymappings()
 		["f"] = 5.5,
 		["i"] = 10,
 		["f10"] = 11,
-		["home"] = 17,
 		["j"] = 9.5,
 		["m"] = 10,
 		["l"] = 11.5,
@@ -25,31 +24,18 @@ function loadkeymappings()
 		["lgui"] = 3,
 		["p"] = 12.5,
 		["s"] = 3.5,
-		["insert"] = 16,
 		["u"] = 9,
 		["t"] = 6.5,
-		["pageup"] = 17,
 		["v"] = 6,
 		["y"] = 8,
 		["x"] = 4,
 		["z"] = 3,
 		["f9"] = 10,
-		["pagedown"] = 17,
-		["left"] = 15,
-		["delete"] = 17,
-		["scrolllock"] = 14,
-		["escape"] = 1,
 		["f4"] = 5,
-		["rctrl"] = 13,
 		["lctrl"] = 1,
 		["f8"] = 9.5,
 		["f11"] = 12,
-		[" "] = 7.5,
-		["'"] = 13.5,
 		["ralt"] = 11,
-		["+"] = 14.5,
-		["-"] = 13,
-		[","] = 11,
 		["."] = 12,
 		["1"] = 2,
 		["0"] = 12,
@@ -63,17 +49,11 @@ function loadkeymappings()
 		["8"] = 9.5,
 		["<"] = 2,
 		["tab"] = 1,
-		["right"] = 17,
 		["7"] = 8.5,
-		["backspace"] = 15.5,
-		["application"] = 12,
-		["end"] = 17,
 		["f5"] = 6,
 		["r"] = 5.5,
 		["k"] = 10,
-		["return"] = 15.5,
 		["2"] = 3,
-		["rshift"] = 14.5,
 		["f2"] = 3,
 		["h"] = 8,
 		["f1"] = 2,
@@ -81,13 +61,9 @@ function loadkeymappings()
 		["lalt"] = 4,
 		["f6"] = 7,
 		["capslock"] = 1.5,
-		["pause"] = 15,
-		["["] = 13.5,
-		["f12"] = 13,
 		["lshift"] = 1,
 		["w"] = 3,
-		["up"] = 16,
-		["down"] = 16,
+		[" "] = 7.5,
 	}
 
 	maxcoordval = 0
@@ -96,6 +72,7 @@ function loadkeymappings()
 		mincoordval = math.min(mincoordval, v)
 		maxcoordval = math.max(maxcoordval, v)
 	end
+
 end
 
 function love.keypressed(key)
@@ -108,7 +85,7 @@ end
 
 function love.draw()
 
-	local posx = (playerPos * gamew + (1-gamew)) * love.graphics.getWidth()
+	local posx = (playerPos * gamew + (1-gamew)*0.5) * love.graphics.getWidth()
 	local posy = love.graphics.getHeight()*0.5
 	local r = 40
 
