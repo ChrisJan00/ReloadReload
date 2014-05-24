@@ -70,10 +70,10 @@ function weapon.mousepressed(x,y,button)
 end
 
 function weapon.draw()
-  love.graphics.draw(shotgun, weapon.position + 100, 500)
-  if reloaded() then
-    love.graphics.print("reloaded", 10,50)
-  end
+  love.graphics.draw(shotgun, weapon.position + 100, 440)
+  -- if reloaded() then
+  --   love.graphics.print("reloaded", 10,50)
+  -- end
 end
 
 function reloaded()
