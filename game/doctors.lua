@@ -7,6 +7,7 @@ function doctors.load()
 	doctors.zscale = 1/doctors.maxscale - 1/doctors.minscale
 	doctors.z0 = 10
 	doctors.zbias = doctors.z0 * doctors.zscale + 1/doctors.maxscale
+	doctors.prescale = 0.7
 
 	doctors.pics = {
 		love.graphics.newImage("images/doctor.png")
@@ -55,6 +56,7 @@ function doctors.spawnDoctor(spawnPosition)
 
 		draw = function(self)
 			local sc = 1 / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
+			sc = sc * doctors.prescale
 			
 			love.graphics.setColor(255,255,255)
 			love.graphics.draw(self.pic, self.x, self.y, self.angle, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
