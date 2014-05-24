@@ -9,6 +9,7 @@ function love.load()
 	doctors.load()
 	weapon = love.filesystem.load("weapon.lua")()
 	weapon.load(200, doctors)
+	collisions = love.filesystem.load("collisions.lua")()
     teeth = love.filesystem.load("teeth.lua")()
     teeth.load()
     sounds = love.filesystem.load("sounds.lua")()
@@ -43,6 +44,7 @@ function love.update(dt)
 	monsters.update(dt)
 	doctors.update(dt)
 	weapon.position = aim.getPosition()
+	 collisions.update(dt)
 	checkDoctorCollision()
 end
 
@@ -58,6 +60,8 @@ function checkDoctorCollision()
 					doc:kill()
 					mon:kill()
 					sounds.play(sounds.splash)
+	        		collisions.spawnExplosion((mxl+mxr)*0.5, love.graphics.getHeight()/2)
+
 				end
 			end
 		end
@@ -75,6 +79,7 @@ function love.draw()
 	aim.draw()
 	weapon.draw(aim.getPosition())
 	teeth.draw()
+ collisions.draw()
 
     if isGameOver then
         love.graphics.setColor(255,255,255)
