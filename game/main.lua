@@ -12,6 +12,7 @@ function love.load()
     teeth = love.filesystem.load("teeth.lua")()
     teeth.load()
 
+	thickness = 0.05
     isGameOver = false
     gameoverpic = love.graphics.newImage("images/gameoverscr.png")
 end
@@ -40,6 +41,26 @@ function love.update(dt)
 	monsters.update(dt)
 	doctors.update(dt)
 	weapon.position = aim.getPosition()
+	checkDoctorCollision()
+end
+
+function checkDoctorCollision()
+
+  for di,doc in ipairs(doctors.list) do
+    for mi,mon in ipairs(monsters.list) do
+      dxl, dxr = doc:getLimits()
+      mxl, mxr = mon:getLimits()
+      
+      if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz+thickness, mon.zz-thickness, mon.zz+thickness) then
+        doc:kill()
+        mon:kill()
+      end
+    end
+  end
+end
+
+function rangesIntersect(a,b,x,y)
+  return (b <= y and b >= x) or (a >= x and a <= y) 
 end
 
 function love.draw()

@@ -70,6 +70,14 @@ function doctors.spawnDoctor(spawnPosition)
 			self.dead = true
 			doctors.anyDead = true
 		end,
+		
+    getLimits = function(self)
+			local sc = 1 / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
+			local xleft = self.x - self.pic:getWidth() * sc * 0.5
+			local xright = self.x + self.pic:getWidth() * sc * 0.5
+			return xleft, xright
+		end
+
 	}
 
 	newDoctor:init()
