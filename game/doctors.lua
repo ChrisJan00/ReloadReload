@@ -72,7 +72,7 @@ function doctors.spawnDoctor(spawnPosition)
 		end,
 		
     getLimits = function(self)
-			local sc = 1 / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
+			local sc = doctors.prescale / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
 			local xleft = self.x - self.pic:getWidth() * sc * 0.5
 			local xright = self.x + self.pic:getWidth() * sc * 0.5
 			return xleft, xright

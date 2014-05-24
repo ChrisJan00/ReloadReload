@@ -46,21 +46,23 @@ end
 
 function checkDoctorCollision()
 
-  for di,doc in ipairs(doctors.list) do
-    for mi,mon in ipairs(monsters.list) do
-      dxl, dxr = doc:getLimits()
-      mxl, mxr = mon:getLimits()
-      
-      if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz+thickness, mon.zz-thickness, mon.zz+thickness) then
-        doc:kill()
-        mon:kill()
-      end
-    end
-  end
+	for di,doc in ipairs(doctors.list) do
+		for mi,mon in ipairs(monsters.list) do
+			if not mon.dead and not doc.dead then
+				dxl, dxr = doc:getLimits()
+				mxl, mxr = mon:getLimits()
+
+				if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
+					doc:kill()
+					mon:kill()
+				end
+			end
+		end
+	end
 end
 
 function rangesIntersect(a,b,x,y)
-  return (b <= y and b >= x) or (a >= x and a <= y) 
+  return not (a>y or b<x)
 end
 
 function love.draw()
