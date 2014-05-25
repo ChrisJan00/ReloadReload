@@ -8,17 +8,19 @@ local traveled = 0
 -- 0: nothing, 1: already moved up, 2: moved down too, its reloaded now
 local reloadState = 0
 
-local reloadLength = 0
+local reloadLength = 100
+
+local shotgunAngles = {}
+local currentAngle = 0
 
 local shotgun = love.graphics.newImage( "images/shotgunready.png" )
 
-local doctors = {}
-
 weapon.position = 0
 
-function weapon.load(rl,docs)
-  reloadLength = rl
-  doctors = docs 
+function weapon.load()
+  reloadState = 2
+  currentAngle = 0
+  shotgunAngles = { math.pi/12, 3*math.pi/12, 0 }
 end
 
 function weapon.update(dt)
@@ -39,12 +41,21 @@ function weapon.update(dt)
 
     lastY = y
 
-    if traveled > reloadLength and reloadState < 2 then
+    if traveled > reloadLength*screenScale and reloadState < 2 then
       reloadState = reloadState + 1
 
       sounds.play(sounds.reload[reloadState])
       traveled = 0
     end
+
+
+    local alphacoef = math.pow(0.85,dt*60)
+    if reloadState == 0 then 
+      -- faster transition when shooting
+      alphacoef = math.pow(0.7,dt*60)
+    end
+    currentAngle = currentAngle * alphacoef + shotgunAngles[reloadState+1] * (1-alphacoef)
+
 
     return reloadState == 2
 end
@@ -73,10 +84,14 @@ function weapon.mousepressed(x,y,button)
 end
 
 function weapon.draw()
-  love.graphics.draw(shotgun, weapon.position + 100, screenSize[2] - 160 * screenScale - walk.value(aim.phase), 0, screenScale, screenScale)
-  -- if reloaded() then
-  --   love.graphics.print("reloaded", 10,50)
-  -- end
+  love.graphics.draw(shotgun, 
+      weapon.position + (100 + shotgun:getWidth()) * screenScale, 
+      screenSize[2] + (-180 + shotgun:getHeight()) * screenScale - walk.value(aim.phase), 
+      currentAngle, 
+      screenScale, 
+      screenScale,
+      shotgun:getWidth(),
+      shotgun:getHeight())
 end
 
 function reloaded()
