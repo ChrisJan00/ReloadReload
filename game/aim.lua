@@ -117,7 +117,7 @@ end
 function aim.update(dt)
 	if keycount == 0 then setDest(0.5) end
 
-	local minDistance = 1/love.graphics.getWidth()
+	local minDistance = 1/screenSize[1]
 	pointerPos = pointerPos + pointerSpeed * dt
 	if math.abs(pointerDest - pointerPos) <= minDistance or 
 		(pointerSpeed>0 and pointerDest<pointerPos) or 
@@ -129,9 +129,9 @@ end
 
 function aim.draw()
 
-	local posx = (pointerPos * gamew + (1-gamew)*0.5) * love.graphics.getWidth()
-	local posy = love.graphics.getHeight()*0.5
-	local meanscale = (screenScale[1]+screenScale[2])/2
+	local posx = (pointerPos * gamew + (1-gamew)*0.5) * screenSize[1]
+	local posy = screenSize[2]*0.5
+	local meanscale = (screenScale+screenScale)/2
 	local r = 40 * meanscale
 
 	love.graphics.setLineWidth(math.max(1,meanscale))
@@ -143,7 +143,7 @@ function aim.draw()
 end
 
 function aim.getPosition()
-  local w = love.graphics.getWidth()
+  local w = screenSize[1]
   return pointerPos * w
 end
 

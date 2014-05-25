@@ -1,5 +1,5 @@
 local collisions = {}
-local defaultTime = 1
+local defaultTime = 0.5
 
 local explosions = {}
 
@@ -11,14 +11,14 @@ function collisions.spawnExplosion(_x, _y, time)
     timeLeft = time or defaultTime,
     x = _x,
     y = _y,
-    prescale = 1,
+    prescale = 0.7,
 
     update = function (self, dt)
       self.timeLeft = self.timeLeft - dt
     end,
 
     draw = function (self)
-      love.graphics.draw(explosionPic, self.x, self.y,0,screenScale[1]*self.prescale,screenScale[2]*self.prescale,explosionPic:getWidth()*0.5,explosionPic:getHeight()*0.5)
+      love.graphics.draw(explosionPic, self.x, self.y,0,screenScale*self.prescale,screenScale*self.prescale,explosionPic:getWidth()*0.5,explosionPic:getHeight()*0.5)
     end
   }
 

@@ -58,7 +58,7 @@ function monsters.spawnMonster()
 
 
 			-- screen coords
-			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()
+			local sw,sh = screenSize[1],screenSize[2]
 			self.x = sw * (self.xx * 0.5 + 0.5)
 			self.y = sh * (self.yy * 0.5 + 0.5)
 			
@@ -66,7 +66,7 @@ function monsters.spawnMonster()
 
 		draw = function(self)
 			local sc = 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
-			sc = { sc * screenScale[1], sc * screenScale[2] }
+			sc = { sc * screenScale, sc * screenScale }
 
 			love.graphics.setColor(255,255,255)
 			love.graphics.draw(self.pic, self.x, self.y, 0, sc[1], sc[2], self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
@@ -82,7 +82,7 @@ function monsters.spawnMonster()
 		end,
 
 		getLimits = function(self)
-			local sc = screenScale[1] / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
+			local sc = screenScale / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
 			local xleft = self.x - self.pic:getWidth() * sc * 0.5
 			local xright = self.x + self.pic:getWidth() * sc * 0.5
 			return xleft, xright

@@ -28,7 +28,7 @@ function doctors.spawnDoctor(spawnPosition)
 			self.solidpic = doctors.solidpics[ndx]
 
 			-- in-game coords
-			self.xx = (spawnPosition/love.graphics.getWidth())*2-1
+			self.xx = (spawnPosition/screenSize[1])*2-1
 			self.yy = 0
 			self.zz = 0
 
@@ -49,14 +49,14 @@ function doctors.spawnDoctor(spawnPosition)
 			self.angle = (self.angle + self.angularspeed * dt) % (math.pi*2)
 
 						-- screen coords
-			local sw,sh = love.graphics.getWidth(),love.graphics.getHeight()
+			local sw,sh = screenSize[1],screenSize[2]
 			self.x = sw * (self.xx * 0.5 + 0.5)
 			self.y = sh * (self.yy * 0.5 + 0.5)
 		end,
 
 		draw = function(self)
 			local sc = 1 / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
-			sc = { sc * doctors.prescale * screenScale[1], sc * doctors.prescale * screenScale[2] }
+			sc = { sc * doctors.prescale * screenScale, sc * doctors.prescale * screenScale }
 			
 			love.graphics.setColor(255,255,255)
 			love.graphics.draw(self.pic, self.x, self.y, self.angle, sc[1], sc[2], self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
@@ -72,7 +72,7 @@ function doctors.spawnDoctor(spawnPosition)
 		end,
 		
     getLimits = function(self)
-			local sc = doctors.prescale * screenScale[1] / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
+			local sc = doctors.prescale * screenScale / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
 			local xleft = self.x - self.pic:getWidth() * sc * 0.5
 			local xright = self.x + self.pic:getWidth() * sc * 0.5
 			return xleft, xright

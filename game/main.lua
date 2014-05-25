@@ -1,4 +1,6 @@
 function love.load()
+	getScreenSizes()
+
 	aim = love.filesystem.load("aim.lua")()
 	aim.load()
 	monsters = love.filesystem.load("monsters.lua")()
@@ -15,7 +17,7 @@ function love.load()
     sounds = love.filesystem.load("sounds.lua")()
     sounds.load()
 
-    screenScale = { love.graphics.getWidth() / 800, love.graphics.getHeight() / 600 }
+
 	thickness = 0.05
     isGameOver = false
     gameoverpic = love.graphics.newImage("images/gameoverscr.png")
@@ -23,6 +25,19 @@ function love.load()
     -- if not isFullscreen then
     	love.mouse.setVisible( false )
     -- end
+end
+
+function getScreenSizes()
+	local w,h = love.graphics.getWidth(),love.graphics.getHeight()
+	screenScale = h / 600
+	screenSize = { w, h }
+	screenOffset = 0
+
+	if w/h ~= 4/3 then
+		screenSize[1] = 800 * screenScale
+		screenOffset = (w - screenSize[1]) / 2
+		screenScale = screenScale
+	end
 end
 
 function love.keypressed(key)
@@ -65,7 +80,7 @@ function checkDoctorCollision()
 					doc:kill()
 					mon:kill()
 					sounds.play(sounds.splash)
-	        		collisions.spawnExplosion((mxl+mxr)*0.5, love.graphics.getHeight()/2)
+	        		collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2)
 
 				end
 			end
@@ -77,19 +92,31 @@ function rangesIntersect(a,b,x,y)
   return not (a>y or b<x)
 end
 
-function love.draw()
+function drawGame()
 	bg.draw()
 	monsters.draw()
 	doctors.draw()
 	aim.draw()
 	weapon.draw(aim.getPosition())
 	teeth.draw()
- collisions.draw()
+	collisions.draw()
 
     if isGameOver then
         love.graphics.setColor(255,255,255)
-        love.graphics.draw(gameoverpic,0,0,0,screenScale[1],screenScale[2])
+        love.graphics.draw(gameoverpic,0,0,0,screenScale,screenScale)
     end
+end
+
+function love.draw()
+	-- black borders
+	love.graphics.push()
+	love.graphics.translate(screenOffset, 0)
+	love.graphics.setScissor(screenOffset, 0, screenSize[1], screenSize[2])
+
+	drawGame()
+
+   	love.graphics.setScissor()
+    love.graphics.pop()
 end
 
 function love.mousepressed( x, y, button )
