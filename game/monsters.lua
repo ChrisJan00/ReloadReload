@@ -22,6 +22,9 @@ function monsters.load()
 	}
 
 
+	monsters.spawnCycle = 0
+	monsters.spawnCycleSpeed = 0.1
+	monsters.spawnCycleAmp = 2
 	monsters.spawnDelay = 3
 	monsters.spawnTimer = monsters.spawnDelay
 
@@ -117,9 +120,12 @@ local function cleanMonsterList()
 end
 
 local function updateSpawner(dt)
-	monsters.spawnTimer = monsters.spawnTimer - dt
-	while monsters.spawnTimer <= 0 do
-		monsters.spawnTimer = monsters.spawnTimer + monsters.spawnDelay
+	monsters.spawnCycle = (monsters.spawnCycle + monsters.spawnCycleSpeed * dt) % (math.pi*2)
+	monsters.spawnDelay = 1 + (1+math.cos(monsters.spawnCycle)) * monsters.spawnCycleAmp
+
+	monsters.spawnTimer = monsters.spawnTimer + dt
+	while monsters.spawnTimer >= monsters.spawnDelay do
+		monsters.spawnTimer = monsters.spawnTimer - monsters.spawnDelay
 		monsters.spawnMonster()
 	end
 end
