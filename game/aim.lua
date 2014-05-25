@@ -107,9 +107,10 @@ function aim.load()
 	pointerPos = 0.5
 	pointerSpeed = 0
 	jumpDelay = 0.2
-	
 
 	gamew = 0.9
+
+	aim.phase = -0.6
 end
 
 function aim.keypressed(key)
@@ -140,7 +141,7 @@ end
 function aim.draw()
 
 	local posx = (pointerPos * gamew + (1-gamew)*0.5) * screenSize[1]
-	local posy = screenSize[2]*0.5
+	local posy = screenSize[2]*0.5 - walk.value(aim.phase) * screenScale
 	local r = 40 * screenScale
 
 	love.graphics.setLineWidth(math.max(1,screenScale))

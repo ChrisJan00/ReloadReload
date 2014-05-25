@@ -42,13 +42,12 @@ function monsters.spawnMonster()
 			self.yy = 0
 			self.zz = -1
 
+			local incspeed = math.random()
+			self.zspeed = 0.1 + 0.1 * incspeed
 
-
-			-- self.ww = self.pic:getWidth() / 800 * 10
-			-- self.hh = self.pic:getHeight() / 600 * 10
-			self.zspeed = 0.1
-
-
+			self.walkspeed = 3 + incspeed*2.5
+			self.cycle = 0
+			self.amp = 30 + math.random()*60
 		end,
 
 		update = function (self, dt)
@@ -58,12 +57,16 @@ function monsters.spawnMonster()
 				teeth.hit()
 			end
 
-
 			-- screen coords
 			local sw,sh = screenSize[1],screenSize[2]
 			self.x = sw * (self.xx * 0.5 + 0.5)
 			self.y = sh * (self.yy * 0.5 + 0.5)
-			
+
+
+			-- walk
+			self.cycle = (self.cycle + self.walkspeed * dt) % (math.pi * 2)
+			local amp = math.pow(math.sin(self.cycle),2) * self.amp * screenScale
+			self.y = self.y - amp * self:getScale()
 		end,
 
 		draw = function(self)

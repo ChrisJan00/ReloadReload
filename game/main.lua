@@ -1,26 +1,20 @@
 function love.load()
 	getScreenSizes()
 
+	walk = love.filesystem.load("walk.lua")()
+
 	aim = love.filesystem.load("aim.lua")()
-	aim.load()
 	entities = love.filesystem.load("entities.lua")()
-	entities.load()
 
 	monsters = love.filesystem.load("monsters.lua")()
-	monsters.load()
 	bg = love.filesystem.load("background.lua")()
-	bg.load()
 	doctors = love.filesystem.load("doctors.lua")()
-	doctors.load()
 	weapon = love.filesystem.load("weapon.lua")()
-	weapon.load(100, doctors)
 	collisions = love.filesystem.load("collisions.lua")()
-	collisions.load()
 	teeth = love.filesystem.load("teeth.lua")()
-	teeth.load()
 	sounds = love.filesystem.load("sounds.lua")()
-	sounds.load()
 
+	newGame()
 
 	thickness = 0.05
 	isGameOver = false
@@ -29,6 +23,23 @@ function love.load()
     if isFullscreen then
     	love.mouse.setVisible( false )
     end
+end
+
+function newGame()
+	walk.load()
+	aim.load()
+	entities.load()
+	monsters.load()
+	bg.load()
+	doctors.load()
+	weapon.load(100, doctors)
+	collisions.load()
+	teeth.load()
+	sounds.load()
+
+	-- gameover management
+	isGameOver = false
+	gameoverTimer = 3
 end
 
 function getScreenSizes()
@@ -50,7 +61,13 @@ function love.keypressed(key)
 		return
 	end
 
-	aim.keypressed(key)
+	if isGameOver then
+		if gameoverTimer <= 0 then
+			newGame()
+		end
+	else
+		aim.keypressed(key)
+	end
 end
 
 function love.keyreleased(key)
@@ -59,9 +76,13 @@ end
 
 function love.update(dt)
 	if isGameOver then
+		if gameoverTimer > 0 then
+			gameoverTimer = gameoverTimer - dt
+		end
 		return
 	end
 
+	walk.update(dt)
 	aim.update(dt)
 	weapon.update(dt)
 	monsters.update(dt)
@@ -102,7 +123,13 @@ function love.draw()
 end
 
 function love.mousepressed( x, y, button )
-  weapon.mousepressed(x,y,button)
+	if isGameOver then
+		if gameoverTimer <= 0 then
+			newGame()
+		end
+	else
+		weapon.mousepressed(x,y,button)
+	end
 end
 
 function gameOver()

@@ -27,6 +27,7 @@ function collisions.spawnExplosion(_x, _y, _zz)
       if t>1 then
         self.opacity = self.opacity * math.pow(0.9, dt*60)
       end
+
     end,
 
     draw = function (self)
