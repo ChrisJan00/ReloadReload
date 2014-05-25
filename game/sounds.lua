@@ -14,7 +14,6 @@ function sounds.load()
 	s.music = love.audio.newSource("sounds/maf-blup.mp3","stream")
 	s.music:setLooping(true)
 	s.music:play()
-
 end
 
 function sounds.play(snd)

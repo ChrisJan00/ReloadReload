@@ -120,6 +120,9 @@ local function cleanMonsterList()
 end
 
 local function updateSpawner(dt)
+	-- avoid spawning while showing enemies
+	if showTitle then return end
+
 	monsters.spawnCycle = (monsters.spawnCycle + monsters.spawnCycleSpeed * dt) % (math.pi*2)
 	monsters.spawnDelay = 1 + (1+math.cos(monsters.spawnCycle)) * monsters.spawnCycleAmp
 

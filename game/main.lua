@@ -13,12 +13,14 @@ function love.load()
 	collisions = love.filesystem.load("collisions.lua")()
 	teeth = love.filesystem.load("teeth.lua")()
 	sounds = love.filesystem.load("sounds.lua")()
+	sounds.load()
 
 	newGame()
 
 	thickness = 0.05
 	isGameOver = false
 	gameoverpic = love.graphics.newImage("images/gameoverscr.png")
+	titlepic = love.graphics.newImage("images/title.png")
 
     if isFullscreen then
     	love.mouse.setVisible( false )
@@ -35,11 +37,12 @@ function newGame()
 	weapon.load(doctors)
 	collisions.load()
 	teeth.load()
-	sounds.load()
+	-- sounds.load()
 
 	-- gameover management
 	isGameOver = false
 	gameoverTimer = 3
+	showTitle = true
 end
 
 function getScreenSizes()
@@ -75,6 +78,8 @@ function love.keyreleased(key)
 end
 
 function love.update(dt)
+	if dt > 0.1 then return end
+
 	if isGameOver then
 		if gameoverTimer > 0 then
 			gameoverTimer = gameoverTimer - dt
@@ -107,6 +112,9 @@ function drawGame()
     if isGameOver then
         love.graphics.setColor(255,255,255)
         love.graphics.draw(gameoverpic,0,0,0,screenScale,screenScale)
+    elseif showTitle then
+        love.graphics.setColor(255,255,255)
+        love.graphics.draw(titlepic,0,0,0,screenScale,screenScale)
     end
 end
 
@@ -123,6 +131,11 @@ function love.draw()
 end
 
 function love.mousepressed( x, y, button )
+	if showTitle then
+		showTitle = false
+		return
+	end
+
 	if isGameOver then
 		if gameoverTimer <= 0 then
 			newGame()
