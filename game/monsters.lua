@@ -30,6 +30,8 @@ end
 function monsters.spawnMonster()
 	local newMonster = {
 		init = function(self)
+			self.isMonster = true
+
 			-- pic
 			local ndx = math.random(#monsters.enemypics)
 			self.pic = monsters.enemypics[ndx]
@@ -65,24 +67,24 @@ function monsters.spawnMonster()
 		end,
 
 		draw = function(self)
-			local sc = 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
-			sc = { sc * screenScale, sc * screenScale }
+			local sc = self:getScale() * screenScale
 
 			love.graphics.setColor(255,255,255)
-			love.graphics.draw(self.pic, self.x, self.y, 0, sc[1], sc[2], self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
+			love.graphics.draw(self.pic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 			
 			local frac = -self.zz
 			love.graphics.setColor(bg.skycolor[1],bg.skycolor[2],bg.skycolor[3],255*frac)
-			love.graphics.draw(self.solidpic, self.x, self.y, 0, sc[1], sc[2], self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
+			love.graphics.draw(self.solidpic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
-		kill = function(self)
-			self.dead = true
-			monsters.anyDead = true
+		kill = monsters.killFunc,
+
+		getScale = function(self)
+			return 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
 		end,
 
 		getLimits = function(self)
-			local sc = screenScale / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
+			local sc = self:getScale() * screenScale
 			local xleft = self.x - self.pic:getWidth() * sc * 0.5
 			local xright = self.x + self.pic:getWidth() * sc * 0.5
 			return xleft, xright
@@ -91,6 +93,11 @@ function monsters.spawnMonster()
 
 	newMonster:init()
 	table.insert(monsters.list, 1, newMonster)
+end
+
+function monsters.killFunc(self)
+	self.dead = true
+	monsters.anyDead = true
 end
 
 local function cleanMonsterList()
@@ -122,6 +129,8 @@ function monsters.update(dt)
 end
 
 function monsters.draw()
+	-- z sorting
+	table.sort(monsters.list, function(a,b) return a.zz < b.zz end)
 	for i,monster in ipairs(monsters.list) do
 		monster:draw()
 	end

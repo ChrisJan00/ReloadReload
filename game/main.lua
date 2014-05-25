@@ -58,30 +58,29 @@ function love.update(dt)
 		return
 	end
 
-
 	aim.update(dt)
 	weapon.update(dt)
 	monsters.update(dt)
-	doctors.update(dt)
 	weapon.position = aim.getPosition()
-	 collisions.update(dt)
 	checkDoctorCollision()
 end
 
 function checkDoctorCollision()
+	for i,mon in ipairs(monsters.list) do
+		if mon.isMonster and not mon.dead then
+			for j,doc in ipairs(monsters.list) do
+				if doc.isDoctor and not doc.dead then
+					
+					dxl, dxr = doc:getLimits()
+					mxl, mxr = mon:getLimits()
 
-	for di,doc in ipairs(doctors.list) do
-		for mi,mon in ipairs(monsters.list) do
-			if not mon.dead and not doc.dead then
-				dxl, dxr = doc:getLimits()
-				mxl, mxr = mon:getLimits()
+					if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
+						doc:kill()
+						mon:kill()
+						sounds.play(sounds.splash)
+		        		collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2, mon.zz)
 
-				if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
-					doc:kill()
-					mon:kill()
-					sounds.play(sounds.splash)
-	        		collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2)
-
+					end
 				end
 			end
 		end
@@ -95,12 +94,10 @@ end
 function drawGame()
 	bg.draw()
 	monsters.draw()
-	doctors.draw()
 	aim.draw()
 	weapon.draw(aim.getPosition())
 	teeth.draw()
-	collisions.draw()
-
+	
     if isGameOver then
         love.graphics.setColor(255,255,255)
         love.graphics.draw(gameoverpic,0,0,0,screenScale,screenScale)
