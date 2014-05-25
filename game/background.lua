@@ -1,19 +1,18 @@
 local bg = {}
 
+-- 0 is bottom, 1 is top
+local groundpos = 0.6
 
 function bg.load()
 	bg.skycolor, bg.groundcolor = {255, 195, 244}, {236, 246, 150}
 
-	-- 0 is bottom, 1 is top
-	local groundpos = 0.6
-
-	local canvas = love.graphics.newCanvas()
+	local ww,hh = screenSize[1], screenSize[2]
+	local canvas = love.graphics.newCanvas(ww,hh)
 	love.graphics.setCanvas(canvas)
 
 	love.graphics.setColor(unpack(bg.skycolor))
-	love.graphics.rectangle("fill",0,0,screenSize[1], screenSize[2])
+	love.graphics.rectangle("fill",0,0,ww,hh)
 
-	local ww,hh = screenSize[1], screenSize[2]
 	local ymin = hh * (1-groundpos)
 	for y=hh,ymin,-1 do
 		local fraction = math.pow((hh - y)/(hh-ymin),2)
@@ -33,7 +32,7 @@ end
 
 function bg.draw()
 	love.graphics.setColor(255,255,255)
-	love.graphics.draw(bg.bgimg,0,0,0,screenScale,screenScale)
+	love.graphics.draw(bg.bgimg)
 end
 
 return bg
