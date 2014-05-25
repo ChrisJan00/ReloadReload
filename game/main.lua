@@ -3,6 +3,9 @@ function love.load()
 
 	aim = love.filesystem.load("aim.lua")()
 	aim.load()
+	entities = love.filesystem.load("entities.lua")()
+	entities.load()
+
 	monsters = love.filesystem.load("monsters.lua")()
 	monsters.load()
 	bg = love.filesystem.load("background.lua")()
@@ -12,19 +15,20 @@ function love.load()
 	weapon = love.filesystem.load("weapon.lua")()
 	weapon.load(100, doctors)
 	collisions = love.filesystem.load("collisions.lua")()
-    teeth = love.filesystem.load("teeth.lua")()
-    teeth.load()
-    sounds = love.filesystem.load("sounds.lua")()
-    sounds.load()
+	collisions.load()
+	teeth = love.filesystem.load("teeth.lua")()
+	teeth.load()
+	sounds = love.filesystem.load("sounds.lua")()
+	sounds.load()
 
 
 	thickness = 0.05
-    isGameOver = false
-    gameoverpic = love.graphics.newImage("images/gameoverscr.png")
+	isGameOver = false
+	gameoverpic = love.graphics.newImage("images/gameoverscr.png")
 
-    -- if not isFullscreen then
+    if isFullscreen then
     	love.mouse.setVisible( false )
-    -- end
+    end
 end
 
 function getScreenSizes()
@@ -61,31 +65,12 @@ function love.update(dt)
 	aim.update(dt)
 	weapon.update(dt)
 	monsters.update(dt)
+	doctors.update(dt)
+	collisions.update(dt)
 	weapon.position = aim.getPosition()
-	checkDoctorCollision()
 end
 
-function checkDoctorCollision()
-	for i,mon in ipairs(monsters.list) do
-		if mon.isMonster and not mon.dead then
-			for j,doc in ipairs(monsters.list) do
-				if doc.isDoctor and not doc.dead then
-					
-					dxl, dxr = doc:getLimits()
-					mxl, mxr = mon:getLimits()
 
-					if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
-						doc:kill()
-						mon:kill()
-						sounds.play(sounds.splash)
-		        		collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2, mon.zz)
-
-					end
-				end
-			end
-		end
-	end
-end
 
 function rangesIntersect(a,b,x,y)
   return not (a>y or b<x)
@@ -93,7 +78,7 @@ end
 
 function drawGame()
 	bg.draw()
-	monsters.draw()
+	entities.draw()
 	aim.draw()
 	weapon.draw(aim.getPosition())
 	teeth.draw()

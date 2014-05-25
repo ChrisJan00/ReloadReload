@@ -77,7 +77,11 @@ function monsters.spawnMonster()
 			love.graphics.draw(self.solidpic, self.x, self.y, 0, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
-		kill = monsters.killFunc,
+		kill = function (self)
+			self.dead = true
+			monsters.anyDead = true
+			entities.anyDead = true
+		end,
 
 		getScale = function(self)
 			return 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
@@ -93,12 +97,10 @@ function monsters.spawnMonster()
 
 	newMonster:init()
 	table.insert(monsters.list, 1, newMonster)
+	table.insert(entities.list, newMonster)
 end
 
-function monsters.killFunc(self)
-	self.dead = true
-	monsters.anyDead = true
-end
+
 
 local function cleanMonsterList()
 	if monsters.anyDead then
@@ -126,14 +128,6 @@ function monsters.update(dt)
 		monster:update(dt)
 	end
 	cleanMonsterList()
-end
-
-function monsters.draw()
-	-- z sorting
-	table.sort(monsters.list, function(a,b) return a.zz < b.zz end)
-	for i,monster in ipairs(monsters.list) do
-		monster:draw()
-	end
 end
 
 function monsters.mousepressed()

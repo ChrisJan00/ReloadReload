@@ -24,7 +24,7 @@ function doctors.spawnDoctor(spawnPosition)
 		init = function(self)
 			-- pic
 			self.isDoctor = true
-			
+
 			local ndx = math.random(#doctors.pics)
 			self.pic = doctors.pics[ndx]
 			self.solidpic = doctors.solidpics[ndx]
@@ -67,10 +67,14 @@ function doctors.spawnDoctor(spawnPosition)
 			love.graphics.draw(self.solidpic, self.x, self.y, self.angle, sc, sc, self.pic:getWidth()*0.5, self.pic:getHeight()*0.5)
 		end,
 
-		kill = monsters.killFunc,
+		kill = function (self)
+			self.dead = true
+			doctors.anyDead = true
+			entities.anyDead = true
+		end,
 
 		getScale = function(self)
-			return 1 / ( (self.zz - monsters.z0) * monsters.zscale + monsters.zbias )
+			return 1 / ( (self.zz - doctors.z0) * doctors.zscale + doctors.zbias )
 		end,
 
 		getLimits = function(self)
@@ -83,7 +87,26 @@ function doctors.spawnDoctor(spawnPosition)
 	}
 
 	newDoctor:init()
-	table.insert(monsters.list, newDoctor)
+	table.insert(doctors.list, newDoctor)
+	table.insert(entities.list, newDoctor)
+end
+
+local function cleanDoctorsList()
+	if doctors.anyDead then
+		doctors.anyDead = false
+		for i = #doctors.list,1,-1 do
+			if doctors.list[i].dead then
+				table.remove(doctors.list, i)
+			end
+		end
+	end
+end
+
+function doctors.update(dt)
+	for i,doctor in ipairs(doctors.list) do
+		doctor:update(dt)
+	end
+	cleanDoctorsList()
 end
 
 return doctors
