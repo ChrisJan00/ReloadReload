@@ -15,6 +15,7 @@ function love.load()
     sounds = love.filesystem.load("sounds.lua")()
     sounds.load()
 
+    screenScale = { love.graphics.getWidth() / 800, love.graphics.getHeight() / 600 }
 	thickness = 0.05
     isGameOver = false
     gameoverpic = love.graphics.newImage("images/gameoverscr.png")
@@ -87,7 +88,7 @@ function love.draw()
 
     if isGameOver then
         love.graphics.setColor(255,255,255)
-        love.graphics.draw(gameoverpic)
+        love.graphics.draw(gameoverpic,0,0,0,screenScale[1],screenScale[2])
     end
 end
 

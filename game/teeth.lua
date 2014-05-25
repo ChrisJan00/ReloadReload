@@ -6,8 +6,8 @@ function teeth.load()
 	teeth.pic = love.graphics.newImage("images/tooth-fresh.png")
 	teeth.rottenpic = love.graphics.newImage("images/tooth-rotten.png")
 	teeth.scale = 1
-	teeth.width = teeth.pic:getWidth() * teeth.scale
-	teeth.height = (teeth.pic:getHeight() + 6) * teeth.scale
+	teeth.width = teeth.pic:getWidth() * teeth.scale * (love.graphics.getWidth()/800)
+	teeth.height = (teeth.pic:getHeight() + 6) * teeth.scale  * (love.graphics.getHeight()/600)
 	teeth.spacing = (love.graphics.getWidth() - teeth.width * ht) / (ht+1) + teeth.width
 
 	teeth.bgpic = love.graphics.newImage("images/teeth-bg.png")
@@ -15,7 +15,7 @@ end
 
 function teeth.draw()
 	love.graphics.setColor(255,255,255)
-	love.graphics.draw(teeth.bgpic)
+	love.graphics.draw(teeth.bgpic, 0, 0, 0, screenScale[1], screenScale[2])
 	for i=1,16 do
 		local y0 = teeth.height
 		local ysc = -1
@@ -26,7 +26,7 @@ function teeth.draw()
 		local x = ((i-1)%8 +0.25) * teeth.spacing
 		local pic = teeth.pic
 		if i>teeth.count then pic = teeth.rottenpic end
-		love.graphics.draw(pic, x, y0, 0, teeth.scale, teeth.scale*ysc)
+		love.graphics.draw(pic, x, y0, 0, teeth.scale*screenScale[1], teeth.scale*ysc*screenScale[2])
 	end
 end
 

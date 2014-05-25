@@ -7,16 +7,16 @@ function love.conf(t)
     t.identity = "reloadreload"        -- The name of the save directory (string)
     if t.version == "0.8.0" then
         loveVersion = 8
-        t.screen.width = 800        -- The window width (number)
-        t.screen.height = 600       -- The window height (number)
+        t.screen.width = 0        -- The window width (number)
+        t.screen.height = 0       -- The window height (number)
         t.screen.fullscreen = isFullscreen -- Enable fullscreen (boolean)
         t.screen.vsync = true       -- Enable vertical sync (boolean)
         t.screen.fsaa = 0           -- The number of FSAA-buffers (number)
     else
         loveVersion = 9
         t.version = "0.9.0"         -- The LÖVE version this game was made for (string)
-        t.window.width = 800        -- The window width (number)
-        t.window.height = 600       -- The window height (number)
+        t.window.width = 0        -- The window width (number)
+        t.window.height = 0       -- The window height (number)
         t.window.fullscreen = isFullscreen -- Enable fullscreen (boolean)
         t.window.vsync = true       -- Enable vertical sync (boolean)
         t.window.fsaa = 0           -- The number of FSAA-buffers (number)

@@ -73,7 +73,7 @@ function weapon.mousepressed(x,y,button)
 end
 
 function weapon.draw()
-  love.graphics.draw(shotgun, weapon.position + 100, 440)
+  love.graphics.draw(shotgun, weapon.position + 100, love.graphics.getHeight() - 160 * screenScale[2], 0, screenScale[1], screenScale[2])
   -- if reloaded() then
   --   love.graphics.print("reloaded", 10,50)
   -- end

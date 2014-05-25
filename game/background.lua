@@ -33,7 +33,7 @@ end
 
 function bg.draw()
 	love.graphics.setColor(255,255,255)
-	love.graphics.draw(bg.bgimg,0,0)
+	love.graphics.draw(bg.bgimg,0,0,0,screenScale[1],screenScale[2])
 end
 
 return bg

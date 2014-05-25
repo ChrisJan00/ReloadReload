@@ -131,7 +131,10 @@ function aim.draw()
 
 	local posx = (pointerPos * gamew + (1-gamew)*0.5) * love.graphics.getWidth()
 	local posy = love.graphics.getHeight()*0.5
-	local r = 40
+	local meanscale = (screenScale[1]+screenScale[2])/2
+	local r = 40 * meanscale
+
+	love.graphics.setLineWidth(math.max(1,meanscale))
 
 	love.graphics.setColor(139,133,204)
 	love.graphics.circle("line", posx, posy, r, r/2)

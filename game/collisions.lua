@@ -11,13 +11,14 @@ function collisions.spawnExplosion(_x, _y, time)
     timeLeft = time or defaultTime,
     x = _x,
     y = _y,
+    prescale = 1,
 
     update = function (self, dt)
       self.timeLeft = self.timeLeft - dt
     end,
 
     draw = function (self)
-      love.graphics.draw(explosionPic, self.x, self.y,0,1,1,explosionPic:getWidth()*0.5,explosionPic:getHeight()*0.5)
+      love.graphics.draw(explosionPic, self.x, self.y,0,screenScale[1]*self.prescale,screenScale[2]*self.prescale,explosionPic:getWidth()*0.5,explosionPic:getHeight()*0.5)
     end
   }
 
