@@ -93,10 +93,8 @@ end
 
 function love.mousepressed( x, y, button )
   weapon.mousepressed(x,y,button)
-	monsters.mousepressed()
 end
 
 function gameOver()
    isGameOver = true
-   monsters.mousepressed()
 end
