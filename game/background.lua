@@ -1,7 +1,7 @@
 local bg = {}
 
 -- 0 is bottom, 1 is top
-local groundpos = 0.6
+local groundpos = 0.52
 
 function bg.load()
 	bg.skycolor, bg.groundcolor = {255, 195, 244}, {236, 246, 150}
@@ -15,7 +15,7 @@ function bg.load()
 
 	local ymin = hh * (1-groundpos)
 	for y=hh,ymin,-1 do
-		local fraction = math.pow((hh - y)/(hh-ymin),2)
+		local fraction = math.pow((hh - y)/(hh-ymin),3)
 		local color = {}
 		for i=1,3 do
 			color[i] = bg.skycolor[i] * fraction + bg.groundcolor[i] * (1-fraction)
