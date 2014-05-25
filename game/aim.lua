@@ -4,9 +4,9 @@ local coordvals =  {}
 local pointerDest,pointerPos,pointerSpeed = 0.5,0.5,0
 local jumpDelay = 0.2
 local gamew = 0.99
-local keycount = 0
 local maxcoordval = 0
 local mincoordval = 0
+local pressedKeys = {}
 
 local function loadkeymappings()
 	coordvals = {
@@ -25,7 +25,7 @@ local function loadkeymappings()
 		["o"] = 11.5,
 		["n"] = 8.5,
 		["lgui"] = 3,
-		["p"] = 12.5,
+		["p"] = 12,
 		["s"] = 3.5,
 		["u"] = 9,
 		["t"] = 6.5,
@@ -35,7 +35,6 @@ local function loadkeymappings()
 		["z"] = 3,
 		["f9"] = 10,
 		["f4"] = 5,
-		["lctrl"] = 1,
 		["f8"] = 9.5,
 		["f11"] = 12,
 		["ralt"] = 11,
@@ -51,7 +50,6 @@ local function loadkeymappings()
 		["9"] = 11,
 		["8"] = 9.5,
 		["<"] = 2,
-		["tab"] = 1,
 		["7"] = 8.5,
 		["f5"] = 6,
 		["r"] = 5.5,
@@ -63,8 +61,6 @@ local function loadkeymappings()
 		["q"] = 2,
 		["lalt"] = 4,
 		["f6"] = 7,
-		["capslock"] = 1.5,
-		["lshift"] = 1,
 		["w"] = 3,
 		[" "] = 7.5,
 	}
@@ -85,6 +81,22 @@ local function setDest(newDest)
 	end
 end
 
+local function updateDest()
+	local valcount = 0
+	for i,key in ipairs(pressedKeys) do
+		valcount = valcount + coordvals[key]
+	end
+
+	valcount = valcount / #pressedKeys
+	setDest( (valcount - mincoordval)/(maxcoordval - mincoordval) )
+end
+
+local function removeKey(key)
+	for i,v in ipairs(pressedKeys) do
+		if v == key then table.remove(pressedKeys, i) end
+	end
+end
+
 --------- API
 local aim = {}
 
@@ -98,24 +110,22 @@ function aim.load()
 	
 
 	gamew = 0.9
-	keycount = 0
-
 end
 
 function aim.keypressed(key)
-	keycount = keycount + 1
-	local val = coordvals[key]
-	if type(val) == "number" then
-		setDest( (val - mincoordval)/(maxcoordval - mincoordval) )
+	if type(coordvals[key]) == "number" then
+		table.insert(pressedKeys, key)
+		updateDest()
 	end
 end
 
 function aim.keyreleased(key)
-	keycount = keycount - 1
+	removeKey(key)
+	updateDest()
 end
 
 function aim.update(dt)
-	if keycount == 0 then setDest(0.5) end
+	if #pressedKeys == 0 then setDest(0.5) end
 
 	local minDistance = 1/screenSize[1]
 	pointerPos = pointerPos + pointerSpeed * dt
