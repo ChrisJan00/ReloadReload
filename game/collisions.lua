@@ -75,14 +75,16 @@ end
 function collisions.check()
   for i,mon in ipairs(monsters.list) do
     for j,doc in ipairs(doctors.list) do
-      dxl, dxr = doc:getLimits()
-      mxl, mxr = mon:getLimits()
+      if not mon.dead and not doc.dead then
+        dxl, dxr = doc:getLimits()
+        mxl, mxr = mon:getLimits()
 
-      if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
-        doc:kill()
-        mon:kill()
-        sounds.play(sounds.splash)
-        collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2, mon.zz)
+        if rangesIntersect(dxl, dxr, mxl, mxr) and rangesIntersect(doc.zz-thickness, doc.zz, mon.zz, mon.zz+thickness) then
+          doc:kill()
+          mon:kill()
+          sounds.play(sounds.splash)
+          collisions.spawnExplosion((mxl+mxr)*0.5, screenSize[2]/2, mon.zz)
+        end
       end
     end
   end
